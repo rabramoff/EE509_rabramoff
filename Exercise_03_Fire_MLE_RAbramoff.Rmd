@@ -324,21 +324,23 @@ theta <- function(rho){
   exp(-20*rho)
   }
 lkexp3 <- function(rho){
-  -sum(dbinom(surv,n,theta(rho),log=TRUE))
+  -(dbinom(y,n,theta(rho),log=TRUE))
 }
 lkexp3(rho = 0.1)
+
+lkexp3 <- function(rho){
+  y*(rho)*20 - ((n-y)*log((1-exp(-rho*20))))
+}
 
 rseq <- seq(0,0.5,length=200)
 llk3 <- sapply(rseq,lkexp3)
 plot(rseq,llk3,main="Log Likelihood",xlab="rho",ylab="-log(L)")
 plot(rseq,exp(-llk3),main="Likelihood",xlab="rho",ylab="L")
 
-fit3 <- nlm(lkexp3,0.1)
+fit3 <- optimize(lkexp3,lower = 0.01, upper=0.9, maximum=FALSE)
 fit3
 ```
-Best estimate of rho = 0.2446421
-
-But I get 0.094856 using the analytical solution on pg. 55 of the textbook.
+Best estimate of rho = 0.09486015
 
 We could use the dat data set and fit the Weibull model to see if c = 1.
 
