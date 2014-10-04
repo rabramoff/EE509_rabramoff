@@ -161,8 +161,8 @@ The output from “nlm” is mostly the same as for “optimize” but it includ
 ```{r}
 x = 1:40
 hist(dat, freq=FALSE)
-lines(x,dexp(x), col="red")
-abline(v=rho_mle,lty=2, col="red")
+lines(x,dexp(x,rho_mle), col="red")
+abline(v=1/rho_mle,lty=2, col="red")
 ```
 
 ## Case Study 2: Change in Fire Risk With Time
@@ -185,7 +185,7 @@ lines(age,dweibull(age,.5,50),col="green")
 ```
 2) Does increasing the “shape” parameter cause fire risk to increase or decrease with age?
 
-It causes fire risk to increase at a certain age, but beyond that point, there is lower fire risk with age.
+It causes fire risk to increase with age, but the PDF appears to decrease at high values because most stands have been burned by then.
 
 3) Extra Credit: Plot the CDF of these 3 distributions. What is significant about the scale parameter? What is the analytical solution for the CDF at this point? Add these lines to your CDF plot.
 ```{r}
@@ -200,7 +200,7 @@ dweeb <- function (age){
   }
 integrate(dweeb, lower=0, upper =50)
 ```
-At the same scale, regardless of shape, the PDF integrates to ~0.6 at age 50.
+At the same scale, regardless of shape, the PDF integrates to ~0.6 at age 50. This number is equal to 1-exp(-1).
 
 ```
 
@@ -346,9 +346,9 @@ We could use the dat data set and fit the Weibull model to see if c = 1.
 
 6) Extra Credit: A plot of the exponential PDF with two curves, one based on the Exponential model from the start of this lab and the second from the Binomial/Exponential fit you just found 
 ```{r}
-x = seq(1,10)
-plot(x,dexp(x), type="l")
-lines(x,dbinom(x,length(x),dexp(x)),type = 's')
+x = 1:40
+plot(x,dexp(x,rho_mle), type = 'l',col="red")
+lines(x,dexp(x,fit3$minimum[1]),type = 's')
 ```
 
 
